@@ -110,5 +110,65 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect contains intersect elements") {
+    new TestSets {
+      val s12 = union(s1, s2)
+      val s23 = union(s2, s3)
+      val s = intersect(s12, s23)
+      assert(!contains(s, 1), "Intersect 1")
+      assert(contains(s, 2), "Intersect 2")
+      assert(!contains(s, 3), "Intersect 3")
+    }
+  }
 
+  test("diff contains different elements") {
+    new TestSets {
+      val s12 = union(s1, s2)
+      val s23 = union(s2, s3)
+      val s = diff(s12, s23)
+      assert(contains(s, 1), "Diff 1")
+      assert(!contains(s, 2), "Diff 2")
+      assert(!contains(s, 3), "Diff 3")
+    }
+  }
+
+  test("filter contains different elements") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val s = filter(s123, (elem: Int) => elem > 5)
+      assert(!contains(s, 1), "Filter 1")
+      assert(!contains(s, 2), "Filter 2")
+      assert(!contains(s, 3), "Filter 3")
+    }
+  }
+
+  test("forall test") {
+    new TestSets {
+      val s = union(union(s1, s2), s3)
+      assert(forall(s, (elem) => elem <= 3), "Forall 1")
+      assert(!forall(s, (elem) => elem <= 2), "Forall 2")
+      val se = intersect(s1, s2)
+      assert(!forall(se, (elem) => true), "Forall 3")
+    }
+  }
+
+  test("exist test") {
+    new TestSets {
+      val s = union(union(s1, s2), s3)
+      assert(exists(s, (elem) => elem <= 3), "Exist 1")
+      assert(exists(s, (elem) => elem <= 2), "Exist 2")
+      assert(!exists(s, (elem) => elem < 1), "Exist 3")
+    }
+  }
+
+  test("map test") {
+    new TestSets {
+      val s123 = union(union(s1, s2), s3)
+      val s = map(s123, (elem) => elem + 10)
+      assert(contains(s, 11), "Map 1")
+      assert(contains(s, 12), "Map 2")
+      assert(contains(s, 13), "Map 3")
+      assert(!contains(s, 14), "Map 4")
+    }
+  }
 }
