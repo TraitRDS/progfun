@@ -32,7 +32,7 @@ trait Level1 extends SolutionChecker {
 
 val level1 = new Level1 {
 }
-level1.pathsFromStart.take(50).toList
+level1.pathsFromStart.take(100).toList
 
 
 
